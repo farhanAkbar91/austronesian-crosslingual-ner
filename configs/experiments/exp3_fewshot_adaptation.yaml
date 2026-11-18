@@ -1,0 +1,46 @@
+# EXP-3: few-shot adaptation. Initialize from a source-trained checkpoint
+# (selected WITHOUT target test data) and fine-tune on 10/50/100 target
+# sentences. A target-only baseline at the same sizes is included.
+#
+#   python scripts/run_experiment.py --config configs/experiments/exp3_fewshot_adaptation.yaml \
+#       --arm fewshot --fewshot-size 50 --seed 42
+#   python scripts/run_experiment.py --config configs/experiments/exp3_fewshot_adaptation.yaml \
+#       --arm target_only --fewshot-size 50 --seed 42
+#
+# The init checkpoint is resolved from EXP-1 artifacts by the highest
+# target-validation entity_f1 (metrics/validation_target_<target>.json).
+# Target test data is never used for selection. When runs were produced on
+# Colab/Kaggle, import their bundles WITH checkpoints first
+# (scripts/import_artifacts.py --include-checkpoints).
+experiment:
+  id: exp3_fewshot_adaptation
+  description: Few-shot adaptation of source-trained checkpoints on 10/50/100 target sentences.
+  training_seeds: [42, 43, 44]
+  sampling_seed: 42
+
+  targets: [jv]
+
+  init_from:
+    experiment: exp1_singlesource_zeroshot
+    source: id
+    selection_metric: target_validation_entity_f1
+    checkpoint: null    # null => resolve from artifacts; or set an explicit checkpoint dir path
+
+  fewshot:
+    sizes: [10, 50, 100]
+
+  baseline_target_only: true    # also allow --arm target_only at the same sizes
+
+  train:
+    language: target
+    size: null        # size comes from --fewshot-size; validated against availability
+
+  validation:
+    language: target
+    size: null        # full target validation split (selection may use it; never test)
+
+  test_language_mode: train
+
+# Section overlays (top-level) deep-merge over the base configs:
+training:
+  epochs: 10

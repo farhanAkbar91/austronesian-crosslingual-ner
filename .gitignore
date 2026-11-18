@@ -1,0 +1,32 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Environments & secrets ---
+.env
+.env.*
+
+# --- Data, caches, and experiment artifacts (never commit datasets/checkpoints) ---
+data/
+outputs/
+bundles/
+hf_cache/
+*.bundle.zip
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/

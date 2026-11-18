@@ -1,0 +1,22 @@
+# EXP-1: single-source zero-shot transfer. One source language at a time
+# (10,000 training sentences), evaluated on both targets without any target
+# training data. One run trains on one source and evaluates on every target in
+# the matrix, for each training seed:
+#   python scripts/run_experiment.py --config configs/experiments/exp1_singlesource_zeroshot.yaml --source id --seed 42
+experiment:
+  id: exp1_singlesource_zeroshot
+  description: Zero-shot transfer from one source language (10k sentences) to jv and su.
+  training_seeds: [42, 43, 44]
+  sampling_seed: 42
+
+  matrix:
+    sources: [id, ms, tl, en]
+    targets: [jv, su]
+
+  train:
+    language: source
+    size: 10000
+
+  validation:
+    language: source
+    size_per_language: 1000   # sampled from each source validation split

@@ -1,0 +1,33 @@
+# Data ingestion, validation, and sampling settings.
+data:
+  dataset:
+    name: wikiann               # Hugging Face hub identifier (config per language)
+    revision: null              # pin a hub revision here for frozen data releases
+    cache_dir: data/hf_cache    # kept inside the workspace; git-ignored
+
+  splits:
+    train: train
+    validation: validation
+    test: test
+
+  # Canonical IOB2 label list; the label id order used everywhere in this repo.
+  # WikiANN label ids are remapped to this order at load time if they differ.
+  label_names: [O, B-PER, I-PER, B-ORG, I-ORG, B-LOC, I-LOC]
+
+  sampling:
+    method: uniform_no_replacement   # deterministic numpy Generator-based sampling
+    seed: 42                         # base sampling seed; per-language seeds are derived from it
+
+  # Malformed-annotation policy. The code NEVER silently repairs data.
+  #   report_only : scan, count, log, and keep all examples (default)
+  #   drop        : scan and drop invalid examples before training
+  #                 (test splits are always kept intact and only reported)
+  invalid_annotations:
+    policy: report_only
+
+  # Duplicate detection uses exact token-sequence matching.
+  #   report_only     : count and report within-split and cross-split duplicates
+  #   drop_train_dups : additionally drop training rows whose token sequence
+  #                     duplicates any train/val/test row
+  duplicates:
+    policy: report_only

@@ -1,0 +1,30 @@
+# EXP-0: in-language baseline. Train directly on 100 target-language training
+# sentences. No source-language data. Validated on the target validation split,
+# evaluated on the target test split.
+#
+# One run per target language and seed:
+#   python scripts/run_experiment.py --config configs/experiments/exp0_inlanguage_baseline.yaml --target jv --seed 42
+#
+# NOTE: verified WikiANN split sizes show jv and su have exactly 100 training
+# examples, so size=100 samples the ENTIRE target train split.
+experiment:
+  id: exp0_inlanguage_baseline
+  description: In-language baseline trained on 100 target sentences (jv and su).
+  training_seeds: [42, 43, 44]
+  sampling_seed: 42
+
+  targets: [jv, su]
+
+  train:
+    language: target
+    size: 100
+
+  validation:
+    language: target
+    size: null        # null => full target validation split
+
+  test_language_mode: train   # a jv-trained run is evaluated on jv only
+
+# Section overlays (top-level) deep-merge over the base configs:
+training:
+  epochs: 10      # small-data regime; ~7 optimizer steps/epoch at batch size 16

@@ -1,0 +1,21 @@
+# EXP-2 Configuration B: multi-source transfer, 3,333 Indonesian + 3,333 Malay
+# + 3,334 English (total exactly 10,000; validation enforces the sum).
+#   python scripts/run_experiment.py --config configs/experiments/exp2b_multisource_id_ms_en.yaml --seed 42
+experiment:
+  id: exp2b_multisource_id_ms_en
+  description: Multi-source transfer with 3333 Indonesian + 3333 Malay + 3334 English training sentences.
+  training_seeds: [42, 43, 44]
+  sampling_seed: 42
+
+  targets: [jv, su]
+
+  train:
+    size: 10000
+    composition:
+      id: 3333
+      ms: 3333
+      en: 3334
+
+  validation:
+    language: source
+    size_per_language: 1000

@@ -1,0 +1,19 @@
+training:
+  enabled: true               # false => evaluation/checkpoint-loading only
+  hyperparameters:
+    learning_rate: 2.0e-5
+    batch_size: 16
+    epochs: 3                 # experiments override this
+    weight_decay: 0.01
+    warmup_ratio: 0.1
+    max_grad_norm: 1.0
+  eval_batch_size: 32
+  fp16: false                 # enable only on CUDA GPUs (Colab/Kaggle)
+  deterministic: true         # best-effort determinism; see docs/reproducibility.md
+  logging_steps: 50
+  device: auto                # auto | cpu | cuda
+  checkpoint:
+    # Best validation epoch is restored after training. The metric name refers
+    # to the compute_metrics output key (Trainer prefixes it with eval_).
+    selection_metric: entity_f1
+    save_total_limit: 2

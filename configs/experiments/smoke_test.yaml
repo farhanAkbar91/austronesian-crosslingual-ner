@@ -1,0 +1,50 @@
+# Smoke test: validates the end-to-end pipeline (config -> data -> alignment ->
+# training -> evaluation -> artifacts) on a tiny synthetic dataset with a tiny
+# randomly initialized model. CPU-only, fully offline, no downloads.
+#
+# THIS IS A PIPELINE CHECK, NOT A RESEARCH RESULT.
+#
+#   python scripts/run_smoke_test.py
+experiment:
+  id: smoke_test
+  description: Offline CPU pipeline validation with synthetic data and a tiny random model.
+  training_seeds: [42]
+  sampling_seed: 42
+
+  targets: [jv]     # synthetic data is language-independent; used for naming only
+
+  train:
+    language: target
+    size: null
+
+  validation:
+    language: target
+    size: null
+
+  test_language_mode: train
+
+# Section overlays (top-level) deep-merge over the base configs:
+data:
+  dataset:
+    name: synthetic
+  synthetic:
+    n_train: 32
+    n_validation: 8
+    n_test: 8
+    seed: 42
+
+model:
+  tiny_random: true
+  max_length: 32
+
+training:
+  epochs: 2
+  batch_size: 8
+  eval_batch_size: 8
+  logging_steps: 1
+
+evaluation:
+  validation_language: target
+  eval_target_validation: false
+  bootstrap:
+    n_resamples: 100

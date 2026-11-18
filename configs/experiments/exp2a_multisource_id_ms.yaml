@@ -1,0 +1,21 @@
+# EXP-2 Configuration A: multi-source transfer, 5,000 Indonesian + 5,000 Malay
+# (total exactly 10,000). One run per seed; each run is evaluated on both
+# targets:
+#   python scripts/run_experiment.py --config configs/experiments/exp2a_multisource_id_ms.yaml --seed 42
+experiment:
+  id: exp2a_multisource_id_ms
+  description: Multi-source transfer with 5000 Indonesian + 5000 Malay training sentences.
+  training_seeds: [42, 43, 44]
+  sampling_seed: 42
+
+  targets: [jv, su]
+
+  train:
+    size: 10000
+    composition:
+      id: 5000
+      ms: 5000
+
+  validation:
+    language: source
+    size_per_language: 1000

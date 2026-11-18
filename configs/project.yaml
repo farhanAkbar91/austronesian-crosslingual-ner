@@ -1,0 +1,33 @@
+# Project-level settings shared by all experiments.
+# Language codes use ISO-639-1 codes that match WikiANN dataset configurations.
+project:
+  name: austronesian-crosslingual-ner
+  version: "0.1.0"
+  description: >-
+    Cross-lingual NER transfer from Austronesian and non-Austronesian source
+    languages to low-resource targets (Javanese, Sundanese) using WikiANN
+    silver data and XLM-RoBERTa-base.
+  label_scheme: iob2            # IOB2 is the only supported scheme; validated at load time
+  entity_types: [PER, LOC, ORG]
+
+  languages:
+    sources: [id, ms, tl, en]
+    targets: [jv, su]
+
+  # Verified WikiANN training-split sizes per language, recorded from the
+  # actual hub dataset (see docs/data_card.md; audits in data/audits/).
+  # jv and su have exactly 100 examples per split: EXP-0's "100 target
+  # sentences" equals the ENTIRE train split, and target test sets contain
+  # 100 sentences each (expect wide bootstrap confidence intervals).
+  known_max_train_sizes:
+    id: 20000
+    ms: 20000
+    tl: 10000
+    en: 20000
+    jv: 100
+    su: 100
+  known_max_sizes_verified: true
+
+  paths:
+    outputs_dir: outputs        # experiment run directories (git-ignored)
+    data_dir: data              # audits, caches, downloads (git-ignored)

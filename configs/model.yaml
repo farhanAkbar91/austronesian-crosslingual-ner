@@ -1,0 +1,16 @@
+model:
+  name: FacebookAI/xlm-roberta-base
+  max_length: 192             # max subword sequence length (incl. special tokens)
+  # Subword labeling policy (documented in docs/methodology.md):
+  #   first_subtoken_label : only the first subtoken of each word carries the
+  #                          word's IOB2 tag; all other subtokens and special
+  #                          tokens get -100 and are excluded from training,
+  #                          validation, and evaluation. Words cut by
+  #                          truncation are excluded from evaluation and the
+  #                          truncation rate is reported.
+  subword_policy: first_subtoken_label
+  # tiny_random: true replaces the pretrained model with a tiny randomly
+  # initialized model and the tokenizer with an offline stub. This is a
+  # pipeline-validation mode (smoke tests), NOT a research configuration.
+  tiny_random: false
+  cache_dir: data/hf_cache

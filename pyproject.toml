@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "austronesian-crosslingual-ner"
+version = "0.1.0"
+description = "Research infrastructure for cross-lingual NER transfer to low-resource Austronesian languages (WikiANN, XLM-RoBERTa)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "pyyaml>=6.0",
+    "pandas>=2.1",
+    "datasets>=3.0,<5",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+# Training stack: required for model training/evaluation and smoke tests with models.
+train = [
+    "torch>=2.2,<3",
+    "transformers>=4.44,<5",
+    "accelerate>=0.30",
+]
+# Development tooling: tests, notebook plots.
+dev = [
+    "pytest>=8.0",
+    "matplotlib>=3.8",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "torch: tests that require the training stack (torch, transformers, accelerate)",
+]
